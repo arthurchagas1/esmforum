@@ -22,4 +22,27 @@ test('Testando cadastro de três perguntas', () => {
   expect(perguntas[1].texto).toBe('2 + 2 = ?');
   expect(perguntas[2].num_respostas).toBe(0);
   expect(perguntas[1].id_pergunta).toBe(perguntas[2].id_pergunta-1);
+
+test('Testando cadastro e consulta de resposta', () => {
+  const idPergunta = modelo.cadastrar_pergunta('Qual a capital da França?');
+  const idResposta = modelo.cadastrar_resposta(idPergunta, 'Paris');
+  expect(typeof idResposta).toBe('number');
+
+  const respostas = modelo.get_respostas(idPergunta);
+  expect(respostas.length).toBe(1);
+  expect(respostas[0].texto).toBe('Paris');
+});
+
+test('Testando get_pergunta e get_num_respostas', () => {
+  const idPergunta = modelo.cadastrar_pergunta('Quem descobriu o Brasil?');
+  modelo.cadastrar_resposta(idPergunta, 'Pedro Álvares Cabral');
+  modelo.cadastrar_resposta(idPergunta, 'Não sei');
+
+  const pergunta = modelo.get_pergunta(idPergunta);
+  expect(pergunta.texto).toBe('Quem descobriu o Brasil?');
+
+  const numRespostas = modelo.get_num_respostas(idPergunta);
+  expect(numRespostas).toBe(2);
+});
+
 });
